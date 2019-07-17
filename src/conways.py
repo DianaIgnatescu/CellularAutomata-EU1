@@ -33,10 +33,33 @@ for row in range(SQ_NUM):
     for col in range(SQ_NUM):
         automata[row * SQ_NUM + col] = random.randint(0, 1)
 
+
+# Add a title
+pygame.display.set_caption("Conway's Game of Life")
+
+# Loop until the user clicks the close button.
+done = False
+
+# Used to manage how fast the screen updates
+clock = pygame.time.Clock()
+
+# -------- Main Program Loop -----------
+while not done:
+    # --- Main event loop
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            done = True
+
+    # --- Game logic should go here
+
+    # Update State ( Add Rules to update each cell based on it's previous state )
+    # Create a new automata for the next state
     new_automata = [0] * (SQ_NUM * SQ_NUM)
 
     for i in range(len(automata)):
         live = 0
+        dead = 8
+
         # Look at neighbors
 
         # Left
@@ -86,25 +109,6 @@ for row in range(SQ_NUM):
 
     # swap the data for the next generations data
     automata = new_automata
-
-
-# Add a title
-pygame.display.set_caption("Conway's Game of Life")
-
-# Loop until the user clicks the close button.
-done = False
-
-# Used to manage how fast the screen updates
-clock = pygame.time.Clock()
-
-# -------- Main Program Loop -----------
-while not done:
-    # --- Main event loop
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            done = True
-
-    # --- Game logic should go here
 
     # --- Screen-clearing code goes here
 
