@@ -35,17 +35,6 @@ for row in range(SQ_NUM):
 
 # Update State ( Add Rules to update each cell based on it's previous state )
 # Create a new automata for the next state
-    # Update State
-    # if there are less than 2 living neighbors the cell dies
-    if automata[i] and live < 2:
-        new_automata[i] = 0
-    # if alive and has less than 4 neighbors then cell carrys on living
-    elif automata[i] and live < 4:
-        new_automata[i] = 1
-    # TODO: 3 more conditions
-
-# swap the data for the next generations data
-automata = new_automata
     new_automata = [0] * (SQ_NUM * SQ_NUM)
 
     for i in range(len(automata)):
@@ -76,6 +65,30 @@ automata = new_automata
         # Bottom right
         if i + SQ_NUM + 1 < (SQ_NUM * SQ_NUM) and automata[i + SQ_NUM + 1]:
             live += 1
+
+        # Update State
+
+        # If there are less than 2 living neighbors, the cell dies
+        if automata[i] and live < 2:
+            new_automata[i] = 0
+        # If alive and has less than 4 neighbors, the cell carries on living
+        elif automata[i] and live < 4:
+            new_automata[i] = 1
+        # If alive and has more than 4 live neighbors, the cell dies
+        elif automata[i] and live > 4:
+            new_automata[i] = 0
+        # If alive and has exactly 2 neighbors, the cell stays alive
+        elif automata[i] and (live == 2 or live == 3):
+            new_automata[i] = 1
+        # If dead and has exactly 3 live neighbors, the cell comes to life
+        elif automata[i] and live == 3:
+            new_automata[i] = 1
+        else:
+            automata[i] = 0
+
+    # swap the data for the next generations data
+    automata = new_automata
+
 
 # Add a title
 pygame.display.set_caption("Conway's Game of Life")
