@@ -33,8 +33,6 @@ for row in range(SQ_NUM):
     for col in range(SQ_NUM):
         automata[row * SQ_NUM + col] = random.randint(0, 1)
 
-# Update State ( Add Rules to update each cell based on it's previous state )
-# Create a new automata for the next state
     new_automata = [0] * (SQ_NUM * SQ_NUM)
 
     for i in range(len(automata)):
@@ -81,7 +79,7 @@ for row in range(SQ_NUM):
         elif automata[i] and (live == 2 or live == 3):
             new_automata[i] = 1
         # If dead and has exactly 3 live neighbors, the cell comes to life
-        elif automata[i] and live == 3:
+        elif not automata[i] and live == 3:
             new_automata[i] = 1
         else:
             automata[i] = 0
