@@ -77,6 +77,7 @@ inc_timestep_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(10, WIN_SI
 dec_timestep_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(110, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
 stop_play_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(210, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
 restart_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(310, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
+gen_count = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(410, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
 
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
@@ -176,6 +177,7 @@ while not done:
 
         # swap the data for the next generations data
         automata = new_automata
+        generations += 1
 
     # --- Screen-clearing code goes here
 
@@ -226,6 +228,15 @@ while not done:
     restart_text_rect = restart_text.get_rect()
     restart_text_rect.center = (restart_button.center[0], restart_button.center[1])
     screen.blit(restart_text, restart_text_rect)
+
+    # Update gen_count_button
+    gen_count_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(410, WIN_SIZE + 10, 4 * BTN_SIZE, BTN_SIZE))
+    gen_count_text = font.render(f"{generations} generations", True, (14, 28, 54))
+    gen_count_text_rect = gen_count_text.get_rect()
+    gen_count_text_rect.center = (gen_count_button.center[0], gen_count_button.center[1])
+    screen.blit(gen_count_text, gen_count_text_rect)
+
+
     # TODO add other button updates
 
     # --- Go ahead and update the screen with what we've drawn.
