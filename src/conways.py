@@ -95,20 +95,15 @@ while not done:
 
             # use the pos of mouse to decide which button was pressed
             if inc_timestep_button.collidepoint(click_position) and time_step < 20:
-                print("faster")
                 time_step += 1
             elif dec_timestep_button.collidepoint(click_position) and time_step > 1:
-                print("slower")
                 time_step -= 1
             elif stop_play_button.collidepoint(click_position) and running:
-                print("stop/play")
                 running = False
             elif stop_play_button.collidepoint(click_position) and not running:
-                print("stop/play")
                 running = True
 
             elif restart_button.collidepoint(click_position):
-                print("restart")
                 generations = 0
                 time_step = 5
                 running = True
