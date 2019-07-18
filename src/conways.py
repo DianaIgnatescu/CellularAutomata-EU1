@@ -111,6 +111,10 @@ while not done:
                 time_step = 5
                 running = True
 
+                for row in range(SQ_NUM):
+                    for col in range(SQ_NUM):
+                        automata[row * SQ_NUM + col] = random.randint(0, 1)
+
     # --- Game logic should go here
 
     # Update State ( Add Rules to update each cell based on it's previous state )
