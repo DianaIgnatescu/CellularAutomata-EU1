@@ -5,6 +5,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GRAY = (25, 25, 25)
 BTN_COLOR = (175, 203, 255)
+TXT_COLOR = (14, 28, 54)
 MARGIN = 3
 SQ_LENGTH = 20
 SQ_NUM = 25
@@ -203,35 +204,35 @@ while not done:
         y += SQ_LENGTH + MARGIN
     # Update inc timestep button
     inc_timestep_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(10, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
-    text = font.render("Increment", True, (14, 28, 54))  # Change text in button and refactor colour
+    text = font.render("Increment", True, TXT_COLOR)
     text_rect = text.get_rect()
     text_rect.center = (inc_timestep_button.center[0], inc_timestep_button.center[1])
     screen.blit(text, text_rect)
 
     # Update dec_timestep_button
     dec_timestep_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(110, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
-    dec_text = font.render("Decrement", True, (14, 28, 54))
+    dec_text = font.render("Decrement", True, TXT_COLOR)
     dec_text_rect = dec_text.get_rect()
     dec_text_rect.center = (dec_timestep_button.center[0], dec_timestep_button.center[1])
     screen.blit(dec_text, dec_text_rect)
 
     # Update play/pause_button
     stop_play_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(210, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
-    stop_play_text = font.render("Stop/Play", True, (14, 28, 54))
+    stop_play_text = font.render("Stop/Play", True, TXT_COLOR)
     stop_play_text_rect = stop_play_text.get_rect()
     stop_play_text_rect.center = (stop_play_button.center[0], stop_play_button.center[1])
     screen.blit(stop_play_text, stop_play_text_rect)
 
     # Update restart_button
     restart_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(310, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
-    restart_text = font.render("Restart", True, (14, 28, 54))
+    restart_text = font.render("Restart", True, TXT_COLOR)
     restart_text_rect = restart_text.get_rect()
     restart_text_rect.center = (restart_button.center[0], restart_button.center[1])
     screen.blit(restart_text, restart_text_rect)
 
     # Update gen_count_button
     gen_count_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(410, WIN_SIZE + 10, 4 * BTN_SIZE, BTN_SIZE))
-    gen_count_text = font.render(f"{generations} generations", True, (14, 28, 54))
+    gen_count_text = font.render(f"{generations} generations", True, TXT_COLOR)
     gen_count_text_rect = gen_count_text.get_rect()
     gen_count_text_rect.center = (gen_count_button.center[0], gen_count_button.center[1])
     screen.blit(gen_count_text, gen_count_text_rect)
