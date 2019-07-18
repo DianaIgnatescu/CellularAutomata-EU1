@@ -61,9 +61,6 @@ automata[2 * SQ_NUM + SQ_NUM - 6] = 1
 # Beacon
 # Glider
 
-
-
-
 # Add a title
 pygame.display.set_caption("Conway's Game of Life")
 
@@ -72,7 +69,7 @@ done = False
 
 # TODO add a font
 
-font = pygame.font.Font('freesansbold.ttf', 16)
+font = pygame.font.Font('freesansbold.ttf', 14)
 
 # TODO Add a button
 
