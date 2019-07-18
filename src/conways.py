@@ -5,7 +5,8 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GRAY = (25, 25, 25)
 BTN_COLOR = (175, 203, 255)
-TXT_COLOR = (14, 28, 54)
+GEN_TXT_COLOR = (175, 203, 255)
+TXT_COLOR = (44, 44, 49)
 MARGIN = 3
 SQ_LENGTH = 20
 SQ_NUM = 25
@@ -226,8 +227,8 @@ while not done:
     screen.blit(restart_text, restart_text_rect)
 
     # Update gen_count_button
-    gen_count_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(410, WIN_SIZE + 10, 4 * BTN_SIZE, BTN_SIZE))
-    gen_count_text = font.render(f"{generations} generations", True, TXT_COLOR)
+    gen_count_button = pygame.draw.rect(screen, GRAY, pygame.Rect(410, WIN_SIZE + 10, 4 * BTN_SIZE, BTN_SIZE))
+    gen_count_text = font.render(f"{generations} generations", True, GEN_TXT_COLOR)
     gen_count_text_rect = gen_count_text.get_rect()
     gen_count_text_rect.center = (gen_count_button.center[0], gen_count_button.center[1])
     screen.blit(gen_count_text, gen_count_text_rect)
