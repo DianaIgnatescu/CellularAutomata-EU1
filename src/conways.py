@@ -76,6 +76,7 @@ font = pygame.font.Font('freesansbold.ttf', 14)
 inc_timestep_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(10, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
 dec_timestep_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(110, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
 stop_play_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(210, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
+restart_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(310, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
 
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
@@ -102,6 +103,12 @@ while not done:
                 running = False
             elif stop_play_button.collidepoint(click_position) and not running:
                 print("stop/play")
+                running = True
+
+            elif restart_button.collidepoint(click_position):
+                print("restart")
+                generations = 0
+                time_step = 5
                 running = True
 
     # --- Game logic should go here
@@ -209,6 +216,12 @@ while not done:
     stop_play_text_rect.center = (stop_play_button.center[0], stop_play_button.center[1])
     screen.blit(stop_play_text, stop_play_text_rect)
 
+    # Update restart_button
+    restart_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(310, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
+    restart_text = font.render("Restart", True, (14, 28, 54))
+    restart_text_rect = restart_text.get_rect()
+    restart_text_rect.center = (restart_button.center[0], restart_button.center[1])
+    screen.blit(restart_text, restart_text_rect)
     # TODO add other button updates
 
     # --- Go ahead and update the screen with what we've drawn.
