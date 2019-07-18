@@ -75,6 +75,7 @@ font = pygame.font.Font('freesansbold.ttf', 14)
 
 inc_timestep_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(10, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
 dec_timestep_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(110, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
+stop_play_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(210, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
 
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
@@ -96,6 +97,12 @@ while not done:
             elif dec_timestep_button.collidepoint(click_position) and time_step > 1:
                 print("slower")
                 time_step -= 1
+            elif stop_play_button.collidepoint(click_position) and running:
+                print("stop/play")
+                running = False
+            elif stop_play_button.collidepoint(click_position) and not running:
+                print("stop/play")
+                running = True
 
     # --- Game logic should go here
 
@@ -192,6 +199,13 @@ while not done:
     dec_text_rect = dec_text.get_rect()
     dec_text_rect.center = (dec_timestep_button.center[0], dec_timestep_button.center[1])
     screen.blit(dec_text, dec_text_rect)
+
+    # Update play/pause_button
+    stop_play_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(210, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
+    stop_play_text = font.render("Stop/Play", True, (14, 28, 54))
+    stop_play_text_rect = stop_play_text.get_rect()
+    stop_play_text_rect.center = (stop_play_button.center[0], stop_play_button.center[1])
+    screen.blit(stop_play_text, stop_play_text_rect)
 
     # TODO add other button updates
 
