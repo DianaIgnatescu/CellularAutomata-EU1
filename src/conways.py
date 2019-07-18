@@ -74,6 +74,7 @@ font = pygame.font.Font('freesansbold.ttf', 14)
 # TODO Add a button
 
 inc_timestep_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(10, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
+dec_timestep_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(110, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
 
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
@@ -84,8 +85,7 @@ while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
-    #     Click event
-    #     TODO this is where all events are added
+        # Click event
         if event.type == pygame.MOUSEBUTTONDOWN:
             click_position = pygame.mouse.get_pos()
 
@@ -93,6 +93,9 @@ while not done:
             if inc_timestep_button.collidepoint(click_position) and time_step < 20:
                 print("faster")
                 time_step += 1
+            elif dec_timestep_button.collidepoint(click_position) and time_step > 1:
+                print("slower")
+                time_step -= 1
 
     # --- Game logic should go here
 
@@ -183,6 +186,12 @@ while not done:
     text_rect.center = (inc_timestep_button.center[0], inc_timestep_button.center[1])
     screen.blit(text, text_rect)
 
+    # Update dec_timestep_button
+    dec_timestep_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(110, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
+    dec_text = font.render("Decrement", True, (14, 28, 54))
+    dec_text_rect = dec_text.get_rect()
+    dec_text_rect.center = (dec_timestep_button.center[0], dec_timestep_button.center[1])
+    screen.blit(dec_text, dec_text_rect)
 
     # TODO add other button updates
 
