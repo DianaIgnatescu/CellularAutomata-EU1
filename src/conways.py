@@ -1,51 +1,243 @@
 import pygame, random
- 
+
 # Define some colors and other constants
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GRAY = (25, 25, 25)
-WIN_SIZE = 500
+BTN_COLOR = (175, 203, 255)
+GEN_TXT_COLOR = (175, 203, 255)
+TXT_COLOR = (44, 44, 49)
+MARGIN = 3
+SQ_LENGTH = 20
+SQ_NUM = 25
+WIN_SIZE = (SQ_NUM + 1) * MARGIN + SQ_NUM * SQ_LENGTH
+BTN_SIZE = 30
 
 pygame.init()
- 
+
 # Set the width and height of the screen [width, height]
-size = (WIN_SIZE, WIN_SIZE)
+size = (WIN_SIZE, WIN_SIZE + BTN_SIZE + 20)
 screen = pygame.display.set_mode(size)
+
+# Initial state
+automata = [0] * (SQ_NUM * SQ_NUM)
+
+# Add some variables to track generations and speed of game start and stop etc
+generations = 0
+time_step = 5
+running = True
+
+# Assign Random Values to our Automata
+# rowx:
+#     col:
+#         automata[row * SQ_NUM + col] = set to a random number
+
+# for i in range(SQ_NUM * SQ_NUM):
+#     automata[i] = random.randint(0, 1)
+
+
+# Assign Random Values to our Automata
+for row in range(SQ_NUM):
+    for col in range(SQ_NUM):
+        automata[row * SQ_NUM + col] = random.randint(0, 1)
+
+
+# Add some special figures on to the screen
+
+# Block
+automata[3] = 1
+automata[4] = 1
+automata[SQ_NUM + 3] = 1
+automata[SQ_NUM + 4] = 1
+
+# Bee-Hive
+
+automata[SQ_NUM - 6] = 1
+automata[SQ_NUM - 5] = 1
+automata[SQ_NUM + SQ_NUM - 4] = 1
+automata[SQ_NUM + SQ_NUM - 7] = 1
+automata[2 * SQ_NUM + SQ_NUM - 5] = 1
+automata[2 * SQ_NUM + SQ_NUM - 6] = 1
+
+# Blinker
+# Beacon
+# Glider
 
 # Add a title
 pygame.display.set_caption("Conway's Game of Life")
- 
+
 # Loop until the user clicks the close button.
 done = False
- 
+
+# Add a font
+
+font = pygame.font.Font('freesansbold.ttf', 14)
+
+# Add buttons
+
+inc_timestep_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(10, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
+dec_timestep_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(110, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
+stop_play_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(210, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
+restart_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(310, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
+gen_count = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(410, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
+
 # Used to manage how fast the screen updates
 clock = pygame.time.Clock()
- 
+
 # -------- Main Program Loop -----------
 while not done:
     # --- Main event loop
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
- 
-    # --- Game logic should go here
-    
+        # Click event
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            click_position = pygame.mouse.get_pos()
 
- 
+            # use the pos of mouse to decide which button was pressed
+            if inc_timestep_button.collidepoint(click_position) and time_step < 20:
+                time_step += 1
+            elif dec_timestep_button.collidepoint(click_position) and time_step > 1:
+                time_step -= 1
+            elif stop_play_button.collidepoint(click_position) and running:
+                running = False
+            elif stop_play_button.collidepoint(click_position) and not running:
+                running = True
+
+            elif restart_button.collidepoint(click_position):
+                generations = 0
+                time_step = 5
+                running = True
+
+                for row in range(SQ_NUM):
+                    for col in range(SQ_NUM):
+                        automata[row * SQ_NUM + col] = random.randint(0, 1)
+
+    # --- Game logic should go here
+
+    # Update State ( Add Rules to update each cell based on it's previous state )
+
+    if running:
+        # Create a new automata for the next state
+        new_automata = [0] * (SQ_NUM * SQ_NUM)
+
+        for i in range(len(automata)):
+            live = 0
+            dead = 8
+
+            # Look at neighbors
+
+            # Left
+            if i - 1 >= 0 and automata[i - 1]:
+                live += 1
+            # Right
+            if i + 1 < (SQ_NUM * SQ_NUM) and automata[i + 1]:
+                live += 1
+            # Top
+            if i - SQ_NUM >= 0 and automata[i - SQ_NUM]:
+                live += 1
+            # Bottom
+            if i + SQ_NUM < (SQ_NUM * SQ_NUM) and automata[i + SQ_NUM]:
+                live += 1
+            # Top left
+            if i - SQ_NUM - 1 >= 0 and automata[i - SQ_NUM - 1]:
+                live += 1
+            # Top right
+            if i - SQ_NUM + 1 >= 0 and automata[i - SQ_NUM + 1]:
+                live += 1
+            # Bottom left
+            if i + SQ_NUM - 1 < (SQ_NUM * SQ_NUM) and automata[i + SQ_NUM - 1]:
+                live += 1
+            # Bottom right
+            if i + SQ_NUM + 1 < (SQ_NUM * SQ_NUM) and automata[i + SQ_NUM + 1]:
+                live += 1
+
+            # Update State
+
+            # If there are less than 2 living neighbors, the cell dies
+            if automata[i] and live < 2:
+                new_automata[i] = 0
+            # If alive and has less than 4 neighbors, the cell carries on living
+            elif automata[i] and live < 4:
+                new_automata[i] = 1
+            # If alive and has more than 4 live neighbors, the cell dies
+            elif automata[i] and live > 4:
+                new_automata[i] = 0
+            # If alive and has exactly 2 neighbors, the cell stays alive
+            elif automata[i] and (live == 2 or live == 3):
+                new_automata[i] = 1
+            # If dead and has exactly 3 live neighbors, the cell comes to life
+            elif not automata[i] and live == 3:
+                new_automata[i] = 1
+            else:
+                automata[i] = 0
+
+        # swap the data for the next generations data
+        automata = new_automata
+        generations += 1
+
     # --- Screen-clearing code goes here
- 
+
     # Here, we clear the screen to gray. Don't put other drawing commands
     # above this, or they will be erased with this command.
     screen.fill(GRAY)
- 
+    # automata[12] = 1
+
     # --- Drawing code should go here
-   
+    # pygame.draw.rect(screen, RED, pygame.Rect(20, 20, 20, 20))
+
+    y = MARGIN
+    i = 0
+    while y < WIN_SIZE:
+        x = MARGIN
+        while x < WIN_SIZE:
+            if automata[i] == 0:
+                pygame.draw.rect(screen, BLACK, pygame.Rect(x, y, SQ_LENGTH, SQ_LENGTH))
+            else:
+                pygame.draw.rect(screen, WHITE, pygame.Rect(x, y, SQ_LENGTH, SQ_LENGTH))
+            i += 1
+            x += SQ_LENGTH + MARGIN
+        y += SQ_LENGTH + MARGIN
+    # Update inc timestep button
+    inc_timestep_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(10, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
+    text = font.render("Increment", True, TXT_COLOR)
+    text_rect = text.get_rect()
+    text_rect.center = (inc_timestep_button.center[0], inc_timestep_button.center[1])
+    screen.blit(text, text_rect)
+
+    # Update dec_timestep_button
+    dec_timestep_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(110, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
+    dec_text = font.render("Decrement", True, TXT_COLOR)
+    dec_text_rect = dec_text.get_rect()
+    dec_text_rect.center = (dec_timestep_button.center[0], dec_timestep_button.center[1])
+    screen.blit(dec_text, dec_text_rect)
+
+    # Update play/pause_button
+    stop_play_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(210, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
+    stop_play_text = font.render("Stop/Play", True, TXT_COLOR)
+    stop_play_text_rect = stop_play_text.get_rect()
+    stop_play_text_rect.center = (stop_play_button.center[0], stop_play_button.center[1])
+    screen.blit(stop_play_text, stop_play_text_rect)
+
+    # Update restart_button
+    restart_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(310, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
+    restart_text = font.render("Restart", True, TXT_COLOR)
+    restart_text_rect = restart_text.get_rect()
+    restart_text_rect.center = (restart_button.center[0], restart_button.center[1])
+    screen.blit(restart_text, restart_text_rect)
+
+    # Update gen_count_button
+    gen_count_button = pygame.draw.rect(screen, GRAY, pygame.Rect(410, WIN_SIZE + 10, 4 * BTN_SIZE, BTN_SIZE))
+    gen_count_text = font.render(f"{generations} generations", True, GEN_TXT_COLOR)
+    gen_count_text_rect = gen_count_text.get_rect()
+    gen_count_text_rect.center = (gen_count_button.center[0], gen_count_button.center[1])
+    screen.blit(gen_count_text, gen_count_text_rect)
 
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
- 
+
     # --- Limit to 5 frames per second
-    clock.tick(5)
- 
+    clock.tick(time_step)
+
 # Close the window and quit.
 pygame.quit()
