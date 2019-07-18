@@ -21,7 +21,7 @@ screen = pygame.display.set_mode(size)
 # Initial state
 automata = [0] * (SQ_NUM * SQ_NUM)
 
-# TODO add some variables to track generations and speed of game start and stop etc
+# Add some variables to track generations and speed of game start and stop etc
 generations = 0
 time_step = 5
 running = True
@@ -41,7 +41,7 @@ for row in range(SQ_NUM):
         automata[row * SQ_NUM + col] = random.randint(0, 1)
 
 
-# TODO add some special figures on to the screen
+# Add some special figures on to the screen
 
 # Block
 automata[3] = 1
@@ -68,11 +68,11 @@ pygame.display.set_caption("Conway's Game of Life")
 # Loop until the user clicks the close button.
 done = False
 
-# TODO add a font
+# Add a font
 
 font = pygame.font.Font('freesansbold.ttf', 14)
 
-# TODO Add a button
+# Add buttons
 
 inc_timestep_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(10, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
 dec_timestep_button = pygame.draw.rect(screen, BTN_COLOR, pygame.Rect(110, WIN_SIZE + 10, 3 * BTN_SIZE, BTN_SIZE))
@@ -231,9 +231,6 @@ while not done:
     gen_count_text_rect = gen_count_text.get_rect()
     gen_count_text_rect.center = (gen_count_button.center[0], gen_count_button.center[1])
     screen.blit(gen_count_text, gen_count_text_rect)
-
-
-    # TODO add other button updates
 
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
